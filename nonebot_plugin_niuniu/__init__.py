@@ -153,7 +153,7 @@ async def _(event: GroupMessageEvent):
   try:
     my_long = content[group][qq]
     if my_long <= -100:
-      result = f"wtf？你已经进化成魅魔了！当前深度{format(my_long,'.1f')}cm" + image(b64=(await text2image("魅魔\n说明：\n击剑时有20%的几率消耗自身长度吞噬对方牛子", color="#f9f6f2", padding=10)).pic2bs4())
+      result = f"wtf？你已经进化成魅魔了！当前深度{format(my_long,'.1f')}cm\n------\n魅魔\n说明：\n击剑时有20%的几率消耗自身长度吞噬对方牛子", 
     elif -100 < my_long <= -50:
       result = f"嗯....好像已经穿过了身体吧..从另一面来看也可以算是凸出来的吧?当前深度{format(my_long,'.2f')}cm"
     elif -50 < my_long <= -25:
@@ -201,7 +201,7 @@ async def _(event: GroupMessageEvent):
         f"你是什么怪物，不要过来啊！当前牛子长度{format(my_long,'.2f')}cm！"
       ])
     elif 100 < my_long:
-      result = f"惊世骇俗！你已经进化成牛头人了！当前牛子长度{format(my_long,'.2f')}cm！！！" + image(b64=(await text2image("牛头人\n说明：\n击剑时有20%的几率消耗自身长度吞噬对方牛子", color="#f9f6f2", padding=10)).pic2bs4())
+      result = f"惊世骇俗！你已经进化成牛头人了！当前牛子长度{format(my_long,'.2f')}cm！！！\n------\n牛头人\n说明：\n击剑时有20%的几率消耗自身长度吞噬对方牛子"
   except KeyError:
     result = "你还没有牛子呢！"
   finally:
