@@ -92,19 +92,19 @@ def fencing(my, oppo, at, qq, group, content={}):
     GtLimit = de(0.27)
     probability = random.randint(1, 100)
     if oppo <= -100 and my > 0 and 10 < probability <= 20:
-        oppo = oppo - RdLimit*my
+        oppo += RdLimit*my
         my -= RdLimit*my
         result = f"对方身为魅魔诱惑了你，你同化成魅魔！当前深度{my}cm!"
     elif oppo >= 100 and my > 0 and 10 < probability <= 20:
-        oppo = oppo + GtLimit*my
+        oppo += GtLimit*my
         my -= GtLimit*my
         result = f"对方以牛头人的荣誉吞噬了你的部分长度！当前长度{my}cm!"
     elif my <= -100 and oppo > 0 and 10 < probability <= 20:
-        my = my - RdLimit*oppo
-        oppo -= RdLimit*oppo
+        my -= RdLimit*oppo
+        oppo += RdLimit*oppo
         result = f"你身为魅魔诱惑了对方，吞噬了对方部分长度！当前长度{my}cm!"
     elif my >= 100 and oppo > 0 and 10 < probability <= 20:
-        my = my + GtLimit*oppo
+        my += GtLimit*oppo
         oppo -= GtLimit*oppo
         result = f"你以牛头人的荣誉吞噬了对方的部分长度！当前长度{oppo}cm!"
     else:
@@ -125,8 +125,8 @@ def fencing(my, oppo, at, qq, group, content={}):
 
             else:
                 reduce = fence(oppo)
-                oppo = oppo - reduce
-                my = my + reduce
+                oppo -= reduce
+                my += reduce
                 if my < 0:
                     result = random.choice([
                         f"哦吼！？你的牛子在长大欸！长大了{reduce}cm！",
@@ -138,8 +138,8 @@ def fencing(my, oppo, at, qq, group, content={}):
             probability = random.randint(1, 100)
             if 0 < probability <= 73:
                 reduce = fence(oppo)
-                oppo = oppo - reduce
-                my = my + reduce
+                oppo -= reduce
+                my += reduce
                 if my < 0:
                     result = random.choice([
                         f"哦吼！？你的牛子在长大欸！长大了{reduce}cm！",
@@ -149,7 +149,8 @@ def fencing(my, oppo, at, qq, group, content={}):
                     result = f"你以绝对的长度让对方屈服了呢！你的长度增加{reduce}cm，当前长度{my}cm！"
             else:
                 reduce = fence(my)
-                my = my - reduce
+                oppo += reduce
+                my -= reduce
                 if my < 0:
                     result = random.choice([
                         f"哦吼！？看来你的牛子因为击剑而凹进去了呢！目前深度{reduce}cm！",
@@ -158,13 +159,12 @@ def fencing(my, oppo, at, qq, group, content={}):
                     ])
                 else:
                     result = f"虽然你比较长，但是对方逆袭了呢！你的长度减少{reduce}cm，当前长度{my}cm！"
-                oppo = oppo + reduce
         else:
             probability = random.randint(1, 100)
             reduce = fence(oppo)
             if 0 < probability <= 50:
-                oppo = oppo - reduce
-                my = my + reduce
+                oppo -= reduce
+                my += reduce
                 if my < 0:
                     result = random.choice([
                         f"哦吼！？你的牛子在长大欸！长大了{reduce}cm！",
@@ -173,7 +173,8 @@ def fencing(my, oppo, at, qq, group, content={}):
                 else:
                     result = f"你以技艺的高超让对方屈服啦🎉！你的长度增加{reduce}cm，当前长度{my}cm！"
             else:
-                my = my - reduce
+                oppo += reduce
+                my -= reduce
                 if my < 0:
                     result = random.choice([
                         f"哦吼！？看来你的牛子因为击剑而凹进去了呢🤣🤣🤣！目前深度{reduce}cm！",
@@ -182,7 +183,6 @@ def fencing(my, oppo, at, qq, group, content={}):
                     ])
                 else:
                     result = f"由于对方击剑技术过于高超，你的长度减少{reduce}cm，当前长度{my}cm！"
-                oppo = oppo + reduce
     content[group][qq] = my
     content[group][at] = oppo
     ReadOrWrite("data/long.json", content)
