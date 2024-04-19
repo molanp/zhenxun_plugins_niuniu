@@ -40,7 +40,7 @@ def fence(rd):
     Args:
         rd (decimal): 精确计算decimal类型或float,int
     """
-    if rd == 0:
+    if rd <= 0.67:
         current_second = time.localtime().tm_sec
         rd = current_second % 10
     return de(abs(float(rd)*random.random())).quantize(de("0.00"))
