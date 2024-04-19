@@ -15,25 +15,25 @@ __plugin_meta__ = PluginMetadata(
     name="牛牛大作战",
     description="牛牛大作战，楠铜快乐游",
     usage="""
-    注册牛子 --注册你的牛子
-    注销牛子 --销毁你的牛子
-    jj [@user] --与注册牛子的人进行击剑，对战结果影响牛子长度
-    我的牛子 --查看自己牛子长度
-    牛子长度排行 --查看本群正数牛子长度排行
-    牛子深度排行 --查看本群负数牛子深度排行
-    打胶 --对自己的牛子进行操作，结果随机
+    注册牛牛 --注册你的牛牛
+    注销牛牛 --销毁你的牛牛
+    jj [@user] --与注册牛牛的人进行击剑，对战结果影响牛牛长度
+    我的牛牛 --查看自己牛牛长度
+    牛牛长度排行 --查看本群正数牛牛长度排行
+    牛牛深度排行 --查看本群负数牛牛深度排行
+    打胶 --对自己的牛牛进行操作，结果随机
 """.strip(),
     type="application",
     homepage="https://github.com/molanp/zhenxun_plugin_niuniu",
 )
 
-niuzi_register = on_command("注册牛子", priority=10, block=True)
-niuzi_delete = on_command("注销牛子", priority=10, block=True)
+niuzi_register = on_command("注册牛牛", priority=10, block=True)
+niuzi_delete = on_command("注销牛牛", priority=10, block=True)
 niuzi_fencing = on_command(
     "jj", aliases={"JJ", "Jj", "jJ", "击剑"}, priority=10, block=True)
-niuzi_my = on_command("我的牛子", priority=10, block=True)
-niuzi_ranking = on_command("牛子长度排行", priority=10, block=True)
-niuzi_ranking_e = on_command("牛子深度排行", priority=10, block=True)
+niuzi_my = on_command("我的牛牛", priority=10, block=True)
+niuzi_ranking = on_command("牛牛长度排行", priority=10, block=True)
+niuzi_ranking_e = on_command("牛牛深度排行", priority=10, block=True)
 niuzi_hit_glue = on_command("打胶", priority=10, block=True)
 
 group_user_jj = {}
@@ -60,11 +60,11 @@ async def _(event: GroupMessageEvent):
         content[group] = {}
     try:
         if content[group][qq]:
-            await niuzi_register.finish(Message("你已经有过牛子啦！"), at_sender=True)
+            await niuzi_register.finish(Message("你已经有过牛牛啦！"), at_sender=True)
     except KeyError:
         content[group][qq] = long
         ReadOrWrite("data/long.json", content)
-        await niuzi_register.finish(Message(f"牛子长出来啦！足足有{long}cm呢"), at_sender=True)
+        await niuzi_register.finish(Message(f"牛牛长出来啦！足足有{long}cm呢"), at_sender=True)
 
 
 @niuzi_delete.handle()
@@ -75,9 +75,9 @@ async def _(event: GroupMessageEvent):
     try:
         del content[group][qq]
         ReadOrWrite("data/long.json", content)
-        await niuzi_delete.finish(Message("从今往后你就没有牛子啦！"), at_sender=True)
+        await niuzi_delete.finish(Message("从今往后你就没有牛牛啦！"), at_sender=True)
     except NameError:
-        await niuzi_delete.finish(Message("你还没有牛子呢！"), at_sender=True)
+        await niuzi_delete.finish(Message("你还没有牛牛呢！"), at_sender=True)
 
 
 @niuzi_fencing.handle()
@@ -131,7 +131,7 @@ async def _(event: GroupMessageEvent):
                     result = fencing(my_long, opponent_long,
                                      at, qq, group, content)
                 except KeyError:
-                    result = "对方还没有牛子呢，你不能和ta击剑！"
+                    result = "对方还没有牛牛呢，你不能和ta击剑！"
             else:
                 result = "不能和自己击剑哦！"
         else:
@@ -141,7 +141,7 @@ async def _(event: GroupMessageEvent):
             del group_user_jj[group][qq]["time"]
         except KeyError:
             pass
-        result = "你还没有牛子呢！不能击剑！"
+        result = "你还没有牛牛呢！不能击剑！"
     finally:
         await niuzi_fencing.finish(Message(result), at_sender=True)
 
@@ -161,13 +161,13 @@ async def _(event: GroupMessageEvent):
         for value in values:
             difference = 0 if previous_value is None else previous_value - value
             if value <= my_long:
-                result = f"📛{str(event.sender.card)}<{qq}>的牛子信息\n⭕排名:#{rank}\n⭕性别:{sex}\n⭕{sex_long}度:{value}cm\n⭕与上一名差距:{round(difference,2)}cm\n⭕备注: "
+                result = f"📛{str(event.sender.card)}<{qq}>的牛牛信息\n⭕排名:#{rank}\n⭕性别:{sex}\n⭕{sex_long}度:{value}cm\n⭕与上一名差距:{round(difference,2)}cm\n⭕备注: "
                 break
             else:
                 rank += 1
                 previous_value = value
         if my_long <= -100:
-            result += f"wtf？你已经进化成魅魔了！魅魔在击剑时有20%的几率消耗自身长度吞噬对方牛子呢。",
+            result += f"wtf？你已经进化成魅魔了！魅魔在击剑时有20%的几率消耗自身长度吞噬对方牛牛呢。",
         elif -100 < my_long <= -50:
             result += f"嗯....好像已经穿过了身体吧..从另一面来看也可以算是凸出来的吧?"
         elif -50 < my_long <= -25:
@@ -215,9 +215,9 @@ async def _(event: GroupMessageEvent):
                 f"你是什么怪物，不要过来啊！！"
             ])
         elif 100 < my_long:
-            result += f"惊世骇俗！你已经进化成牛头人了！牛头人在击剑时有20%的几率消耗自身长度吞噬对方牛子呢。"
+            result += f"惊世骇俗！你已经进化成牛头人了！牛头人在击剑时有20%的几率消耗自身长度吞噬对方牛牛呢。"
     except KeyError:
-        result = "你还没有牛子呢！"
+        result = "你还没有牛牛呢！"
     finally:
         await niuzi_my.finish(Message(result), at_sender=True)
 
@@ -238,7 +238,7 @@ async def _(event: GroupMessageEvent, arg: Message = CommandArg()):
             all_user_data.append(user_data)
 
     if len(all_user_id) != 0:
-        rank_image = await init_rank("牛子长度排行榜-单位cm", all_user_id, all_user_data, event.group_id, num)
+        rank_image = await init_rank("牛牛长度排行榜-单位cm", all_user_id, all_user_data, event.group_id, num)
         if rank_image:
             await niuzi_ranking.finish(image(b64=rank_image.pic2bs4()))
     else:
@@ -261,7 +261,7 @@ async def _(event: GroupMessageEvent, arg: Message = CommandArg()):
             all_user_data.append(float(str(user_data)[1:]))
 
     if len(all_user_id) != 0:
-        rank_image = await init_rank("牛子深度排行榜-单位cm", all_user_id, all_user_data, event.group_id, num)
+        rank_image = await init_rank("牛牛深度排行榜-单位cm", all_user_id, all_user_data, event.group_id, num)
         if rank_image:
             await niuzi_ranking_e.finish(image(b64=rank_image.pic2bs4()))
     else:
@@ -305,36 +305,36 @@ async def _(event: GroupMessageEvent):
             reduce = random_long()
             my_long += abs(reduce*de(my_long/10))
             result = random.choice([
-                f"你嘿咻嘿咻一下，促进了牛子发育，牛子增加{reduce}cm了呢！",
-                f"你打了个舒服痛快的🦶呐，牛子增加了{reduce}cm呢！"
+                f"你嘿咻嘿咻一下，促进了牛牛发育，牛牛增加{reduce}cm了呢！",
+                f"你打了个舒服痛快的🦶呐，牛牛增加了{reduce}cm呢！"
             ])
         elif 40 < probability <= 60:
             result = random.choice([
                 "你打了个🦶，但是什么变化也没有，好奇怪捏~",
-                "你的牛子刚开始变长了，可过了一会又回来了，什么变化也没有，好奇怪捏~"
+                "你的牛牛刚开始变长了，可过了一会又回来了，什么变化也没有，好奇怪捏~"
             ])
         else:
             reduce = random_long()
             my_long -= abs(reduce*de(my_long/10))
             if my_long < 0:
                 result = random.choice([
-                    f"哦吼！？看来你的牛子凹进去了{reduce}cm呢！",
-                    f"你突发恶疾！你的牛子凹进去了{reduce}cm！",
-                    f"笑死，你因为打🦶过度导致牛子凹进去了{reduce}cm！🤣🤣🤣"
+                    f"哦吼！？看来你的牛牛凹进去了{reduce}cm呢！",
+                    f"你突发恶疾！你的牛牛凹进去了{reduce}cm！",
+                    f"笑死，你因为打🦶过度导致牛牛凹进去了{reduce}cm！🤣🤣🤣"
                 ])
             else:
                 result = random.choice([
-                    f"阿哦，你过度打🦶，牛子缩短{reduce}cm了呢！",
-                    f"你的牛子变长了很多，你很激动地继续打🦶，然后牛子缩短了{reduce}cm呢！",
-                    f"小打怡情，大打伤身，强打灰飞烟灭！你过度打🦶，牛子缩短了{reduce}cm捏！"
+                    f"阿哦，你过度打🦶，牛牛缩短{reduce}cm了呢！",
+                    f"你的牛牛变长了很多，你很激动地继续打🦶，然后牛牛缩短了{reduce}cm呢！",
+                    f"小打怡情，大打伤身，强打灰飞烟灭！你过度打🦶，牛牛缩短了{reduce}cm捏！"
                 ])
         content[group][qq] = my_long
         ReadOrWrite("data/long.json", content)
     except KeyError:
         del group_hit_glue[group][qq]["time"]
         result = random.choice([
-            "你还没有牛子呢！不能打胶！",
-            "无牛子，打胶不要的"
+            "你还没有牛牛呢！不能打胶！",
+            "无牛牛，打胶不要的"
         ])
     finally:
         await niuzi_hit_glue.finish(Message(result), at_sender=True)
