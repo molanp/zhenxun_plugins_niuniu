@@ -194,7 +194,8 @@ async def _(event: GroupMessageEvent):
             result += random.choice([
                 f"你行不行啊？细狗！",
                 f"虽然短，但是小小的也很可爱呢。",
-                f"像一只蚕宝宝。"
+                f"像一只蚕宝宝。",
+                "长大了。"
             ])
         elif 10 < my_long <= 25:
             result += random.choice([

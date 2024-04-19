@@ -36,14 +36,13 @@ def random_long():
 
 def fence(rd):
     """
+
     根据比例减少/增加牛牛长度
     Args:
         rd (decimal): 精确计算decimal类型或float,int
     """
-    if rd == 0:
-        current_second = time.localtime().tm_sec
-        rd = current_second % 10
-    return de(abs(float(rd)*random.random())).quantize(de("0.00"))
+    rd -= de(time.localtime().tm_sec % 10)
+    return de(abs(rd*de(random.random()))).quantize(de("0.00"))
 
 
 def round_numbers(data, num_digits=2):
@@ -133,7 +132,7 @@ def fencing(my, oppo, at, qq, group, content={}):
     else:
         if oppo > my:
             probability = random.randint(1, 100)
-            if 0 < probability <= 69:
+            if 0 < probability <= 60:
                 reduce = fence(my)
                 my = my - reduce
                 if my < 0:
