@@ -131,7 +131,7 @@ def fencing(my, oppo, at, qq, group, content={}):
     else:
         if oppo > my:
             probability = random.randint(1, 100)
-            if 0 < probability <= 69:
+            if 0 < probability <= 60:
                 reduce = fence(my)
                 my = my - reduce
                 if my < 0:
@@ -183,7 +183,7 @@ def fencing(my, oppo, at, qq, group, content={}):
         else:
             probability = random.randint(1, 100)
             reduce = fence(oppo)
-            if 0 < probability <= 37:
+            if 0 < probability <= 50:
                 oppo -= reduce
                 my += reduce
                 if my < 0:
