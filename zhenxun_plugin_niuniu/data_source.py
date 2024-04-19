@@ -40,10 +40,8 @@ def fence(rd):
     Args:
         rd (decimal): 精确计算decimal类型或float,int
     """
-    if rd <= 0.67:
-        current_second = time.localtime().tm_sec
-        rd = current_second % 10
-    return de(abs(float(rd)*random.random())).quantize(de("0.00"))
+    rd -= de(time.localtime().tm_sec % 10)
+    return de(abs(rd*de(random.random()))).quantize(de("0.00"))
 
 
 def round_numbers(data, num_digits=2):
@@ -185,7 +183,7 @@ def fencing(my, oppo, at, qq, group, content={}):
         else:
             probability = random.randint(1, 100)
             reduce = fence(oppo)
-            if 0 < probability <= 50:
+            if 0 < probability <= 27:
                 oppo -= reduce
                 my += reduce
                 if my < 0:
