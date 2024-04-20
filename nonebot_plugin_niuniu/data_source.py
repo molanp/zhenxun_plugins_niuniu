@@ -122,7 +122,7 @@ def fencing(my, oppo, at, qq, group, content={}):
         result = f"对方身为魅魔诱惑了你，你同化成魅魔！当前长度{my}cm!"
     elif oppo >= 100 and my > 0 and 10 < probability <= 20:
         oppo += abs(GtLimit*my)
-        my -= abs(GtLimit*my-
+        my -= abs(GtLimit*my)
         result = f"对方以牛头人的荣誉吞噬了你的部分长度！当前长度{my}cm!"
     elif my <= -100 and oppo > 0 and 10 < probability <= 20:
         my += abs(RdLimit*oppo)
