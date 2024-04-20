@@ -5,7 +5,7 @@ from nonebot.plugin import PluginMetadata
 from nonebot.adapters.onebot.v11 import (
     GroupMessageEvent,
     Message)
-from .data_source import ReadOrWrite, random_long, fencing, get_all_users, init_rank
+from .data_source import ReadOrWrite, random_long, fencing, get_all_users, init_rank, hit_glue
 from decimal import Decimal as de
 import time
 import random
