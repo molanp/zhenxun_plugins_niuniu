@@ -116,20 +116,20 @@ def fencing(my, oppo, at, qq, group, content={}):
     GtLimit = de(0.27)
     probability = random.randint(1, 100)
     if oppo <= -100 and my > 0 and 10 < probability <= 20:
-        oppo += RdLimit*my
-        my -= RdLimit*my
-        result = f"对方身为魅魔诱惑了你，你同化成魅魔！当前深度{my}cm!"
+        oppo += abs(RdLimit*my)
+        my -= abs(RdLimit*my)
+        result = f"对方身为魅魔诱惑了你，你同化成魅魔！当前长度{my}cm!"
     elif oppo >= 100 and my > 0 and 10 < probability <= 20:
-        oppo += GtLimit*my
-        my -= GtLimit*my
+        oppo += abs(GtLimit*my)
+        my -= abs(GtLimit*my)
         result = f"对方以牛头人的荣誉吞噬了你的部分长度！当前长度{my}cm!"
     elif my <= -100 and oppo > 0 and 10 < probability <= 20:
-        my -= RdLimit*oppo
-        oppo += RdLimit*oppo
+        my += abs(RdLimit*oppo)
+        oppo -= abs(RdLimit*oppo)
         result = f"你身为魅魔诱惑了对方，吞噬了对方部分长度！当前长度{my}cm!"
     elif my >= 100 and oppo > 0 and 10 < probability <= 20:
-        my += GtLimit*oppo
-        oppo -= GtLimit*oppo
+        my += abs(GtLimit*oppo)
+        oppo -= abs(GtLimit*oppo)
         result = f"你以牛头人的荣誉吞噬了对方的部分长度！当前长度{oppo}cm!"
     else:
         if oppo > my:
