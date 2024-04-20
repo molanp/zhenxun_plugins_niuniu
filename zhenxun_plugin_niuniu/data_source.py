@@ -33,6 +33,9 @@ def random_long():
     """
     return de(str(f"{random.randint(1,9)}.{random.randint(00,99)}"))
 
+def hit_glue(l): 
+  l -= de(1)
+  return de(abs(de(random.random())*l/de(10)))
 
 def fence(rd):
     """
