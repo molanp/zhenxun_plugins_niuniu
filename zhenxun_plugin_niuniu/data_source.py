@@ -35,7 +35,7 @@ def random_long():
 
 def hit_glue(l): 
   l -= de(1)
-  return de(abs(de(random.random())*l/de(10)))
+  return de(abs(de(random.random())*l/de(10))).quantize(de("0.00"))
 
 def fence(rd):
     """
