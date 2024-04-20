@@ -130,13 +130,14 @@ def fencing(my, oppo, at, qq, group, content={}):
     elif my >= 100 and oppo > 0 and 10 < probability <= 20:
         my += abs(GtLimit*oppo)
         oppo -= abs(GtLimit*oppo)
-        result = f"你以牛头人的荣誉吞噬了对方的部分长度！当前长度{oppo}cm!"
+        result = f"你以牛头人的荣誉吞噬了对方的部分长度！当前长度{my}cm!"
     else:
         if oppo > my:
             probability = random.randint(1, 100)
             if 0 < probability <= 60:
                 reduce = fence(my)
-                my = my - reduce
+                my -= reduce
+                oppo += reduce
                 if my < 0:
                     result = random.choice([
                         f"哦吼！？看来你的牛牛因为击剑而凹进去了呢！凹进去了{reduce}cm！",
@@ -145,7 +146,6 @@ def fencing(my, oppo, at, qq, group, content={}):
                     ])
                 else:
                     result = f"对方以绝对的长度让你屈服了呢！你的长度减少{reduce}cm，当前长度{my}cm！"
-                oppo = oppo + reduce
 
             else:
                 reduce = fence(oppo)
