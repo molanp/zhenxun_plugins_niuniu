@@ -167,7 +167,7 @@ async def _(event: GroupMessageEvent):
                 rank += 1
                 previous_value = value
         if my_long <= -100:
-            result += f"wtf？你已经进化成魅魔了！魅魔在击剑时有20%的几率消耗自身长度吞噬对方牛牛呢。",
+            result += f"wtf？你已经进化成魅魔了！魅魔在击剑时有20%的几率消耗自身长度吞噬对方牛牛呢。"
         elif -100 < my_long <= -50:
             result += f"嗯....好像已经穿过了身体吧..从另一面来看也可以算是凸出来的吧?"
         elif -50 < my_long <= -25:
