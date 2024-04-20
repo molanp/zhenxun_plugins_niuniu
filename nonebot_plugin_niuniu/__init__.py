@@ -303,8 +303,8 @@ async def _(event: GroupMessageEvent):
         group_hit_glue[group][qq]["time"] = time.time()
         probability = random.randint(1, 100)
         if 0 < probability <= 40:
-            reduce = random_long()
-            my_long += abs(reduce*de(my_long/10))
+            reduce = hit_glue(my_long)
+            my_long += reduce
             result = random.choice([
                 f"你嘿咻嘿咻一下，促进了牛牛发育，牛牛增加{reduce}cm了呢！",
                 f"你打了个舒服痛快的🦶呐，牛牛增加了{reduce}cm呢！"
@@ -315,8 +315,8 @@ async def _(event: GroupMessageEvent):
                 "你的牛牛刚开始变长了，可过了一会又回来了，什么变化也没有，好奇怪捏~"
             ])
         else:
-            reduce = random_long()
-            my_long -= abs(reduce*de(my_long/10))
+            reduce = hit_glue(my_long)
+            my_long -= reduce
             if my_long < 0:
                 result = random.choice([
                     f"哦吼！？看来你的牛牛凹进去了{reduce}cm呢！",
