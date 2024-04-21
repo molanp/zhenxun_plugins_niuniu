@@ -119,19 +119,19 @@ def fencing(my, oppo, at, qq, group, content={}):
     GtLimit = de(0.27)
     probability = random.randint(1, 100)
     if oppo <= -100 and my > 0 and 10 < probability <= 20:
-        oppo = 0.85*oppo
+        oppo = de(0.85)*oppo
         my -= abs(RdLimit*my)
         result = f"对方身为魅魔诱惑了你，你同化成魅魔！当前长度{my}cm!"
     elif oppo >= 100 and my > 0 and 10 < probability <= 20:
-        oppo = 0.85*oppo
+        oppo = de(0.85)*oppo
         my -= abs(GtLimit*my)
         result = f"对方以牛头人的荣誉摧毁了你的牛牛！当前长度{my}cm!"
     elif my <= -100 and oppo > 0 and 10 < probability <= 20:
-        my = 0.85*my
+        my = de(0.85)*my
         oppo -= abs(RdLimit*oppo)
         result = f"你身为魅魔诱惑了对方，吞噬了对方部分长度！当前长度{my}cm!"
     elif my >= 100 and oppo > 0 and 10 < probability <= 20:
-        my = 0.85*my
+        my = de(0.85)*my
         oppo -= abs(GtLimit*oppo)
         result = f"你以牛头人的荣誉摧毁了对方的牛牛！当前长度{my}cm!"
     else:
