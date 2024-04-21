@@ -13,7 +13,6 @@ from utils.image_utils import BuildMat
 from configs.path_config import IMAGE_PATH
 from typing import List, Union
 
-
 def pic2b64(pic: Image) -> str:
     """
     说明:
@@ -39,11 +38,14 @@ def hit_glue(l):
 
 def fence(rd):
     """
+
     根据比例减少/增加牛牛长度
     Args:
         rd (decimal): 精确计算decimal类型或float,int
     """
     rd -= de(time.localtime().tm_sec % 10)
+    if rd > 1000000:
+      return de(rd - de(random.randint(0.13, 0.34))*rd)
     return de(abs(rd*de(random.random()))).quantize(de("0.00"))
 
 
@@ -116,28 +118,28 @@ def fencing(my, oppo, at, qq, group, content={}):
     GtLimit = de(0.27)
     probability = random.randint(1, 100)
     if oppo <= -100 and my > 0 and 10 < probability <= 20:
-        oppo += abs(RdLimit*my)
+        oppo = de(0.85)*oppo
         my -= abs(RdLimit*my)
         result = f"对方身为魅魔诱惑了你，你同化成魅魔！当前长度{my}cm!"
     elif oppo >= 100 and my > 0 and 10 < probability <= 20:
-        oppo += abs(GtLimit*my)
+        oppo = de(0.85)*oppo
         my -= abs(GtLimit*my)
-        result = f"对方以牛头人的荣誉吞噬了你的部分长度！当前长度{my}cm!"
+        result = f"对方以牛头人的荣誉摧毁了你的牛牛！当前长度{my}cm!"
     elif my <= -100 and oppo > 0 and 10 < probability <= 20:
-        my += abs(RdLimit*oppo)
+        my = de(0.85)*my
         oppo -= abs(RdLimit*oppo)
         result = f"你身为魅魔诱惑了对方，吞噬了对方部分长度！当前长度{my}cm!"
     elif my >= 100 and oppo > 0 and 10 < probability <= 20:
-        my += abs(GtLimit*oppo)
+        my = de(0.85)*my
         oppo -= abs(GtLimit*oppo)
-        result = f"你以牛头人的荣誉吞噬了对方的部分长度！当前长度{my}cm!"
+        result = f"你以牛头人的荣誉摧毁了对方的牛牛！当前长度{my}cm!"
     else:
         if oppo > my:
             probability = random.randint(1, 100)
             if 0 < probability <= 60:
                 reduce = fence(my)
                 my -= reduce
-                oppo += reduce
+                oppo += reduce*de(0.8)
                 if my < 0:
                     result = random.choice([
                         f"哦吼！？看来你的牛牛因为击剑而凹进去了呢！凹进去了{reduce}cm！",
@@ -150,7 +152,7 @@ def fencing(my, oppo, at, qq, group, content={}):
             else:
                 reduce = fence(oppo)
                 oppo -= reduce
-                my += reduce
+                my += reduce*de(0.8)
                 if my < 0:
                     result = random.choice([
                         f"哦吼！？你的牛牛在长大欸！长大了{reduce}cm！",
@@ -163,6 +165,7 @@ def fencing(my, oppo, at, qq, group, content={}):
             if 0 < probability <= 73:
                 reduce = fence(oppo)
                 oppo -= reduce
+                reduce = reduce*de(0.8)
                 my += reduce
                 if my < 0:
                     result = random.choice([
@@ -173,7 +176,7 @@ def fencing(my, oppo, at, qq, group, content={}):
                     result = f"你以绝对的长度让对方屈服了呢！你的长度增加{reduce}cm，当前长度{my}cm！"
             else:
                 reduce = fence(my)
-                oppo += reduce
+                oppo += reduce*de(0.8)
                 my -= reduce
                 if my < 0:
                     result = random.choice([
@@ -188,6 +191,7 @@ def fencing(my, oppo, at, qq, group, content={}):
             reduce = fence(oppo)
             if 0 < probability <= 50:
                 oppo -= reduce
+                reduce = reduce*de(0.8)
                 my += reduce
                 if my < 0:
                     result = random.choice([
@@ -197,7 +201,7 @@ def fencing(my, oppo, at, qq, group, content={}):
                 else:
                     result = f"你以技艺的高超让对方屈服啦🎉！你的长度增加{reduce}cm，当前长度{my}cm！"
             else:
-                oppo += reduce
+                oppo += reduce*de(0.8)
                 my -= reduce
                 if my < 0:
                     result = random.choice([
@@ -234,9 +238,8 @@ async def init_rank(
         all_user_id.remove(max_user_id)
         all_user_data.remove(_max)
         try:
-            user_name = (
-                await GroupInfoUser.get_member_info(max_user_id, group_id)
-            ).user_name
+          # 暂未找到nonebot方法获取群昵称
+            user_name = max_user_id
         except AttributeError:
             user_name = f"{max_user_id}"
         _uname_lst.append(user_name)
