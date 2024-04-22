@@ -45,7 +45,7 @@ def fence(rd):
     """
     rd -= de(time.localtime().tm_sec % 10)
     if rd > 1000000:
-      return de(rd - de(random.randint(0.13, 0.34))*rd)
+      return de(rd - de(random.uniform(0.13, 0.34))*rd)
     return de(abs(rd*de(random.random()))).quantize(de("0.00"))
 
 
