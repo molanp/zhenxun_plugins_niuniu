@@ -76,7 +76,7 @@ async def _(event: GroupMessageEvent):
         del content[group][qq]
         ReadOrWrite("data/long.json", content)
         await niuzi_delete.finish(Message("从今往后你就没有牛牛啦！"), at_sender=True)
-    except NameError:
+    except:
         await niuzi_delete.finish(Message("你还没有牛牛呢！"), at_sender=True)
 
 
@@ -161,6 +161,7 @@ async def _(event: GroupMessageEvent):
         for value in values:
             difference = 0 if previous_value is None else previous_value - value
             if value <= my_long:
+                value = abs(my_long) if my_long < 0 else my_long
                 result = f"📛{str(event.sender.card)}<{qq}>的牛牛信息\n⭕排名:#{rank}\n⭕性别:{sex}\n⭕{sex_long}度:{value}cm\n⭕与上一名差距:{round(difference,2)}cm\n⭕备注: "
                 break
             else:
@@ -332,7 +333,10 @@ async def _(event: GroupMessageEvent):
         content[group][qq] = my_long
         ReadOrWrite("data/long.json", content)
     except KeyError:
-        del group_hit_glue[group][qq]["time"]
+        try:
+          del group_hit_glue[group][qq]["time"]
+        except:
+          pass
         result = random.choice([
             "你还没有牛牛呢！不能打胶！",
             "无牛牛，打胶不要的"
