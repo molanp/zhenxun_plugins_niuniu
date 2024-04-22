@@ -171,6 +171,7 @@ async def _(event: GroupMessageEvent):
         for value in values:
             difference = 0 if previous_value is None else previous_value - value
             if value <= my_long:
+                value = abs(my_long) if my_long < 0 else my_long
                 result = f"\n📛{str(event.sender.card)}<{qq}>的牛牛信息\n⭕排名:#{rank}\n⭕性别:{sex}\n⭕{sex_long}度:{value}cm\n⭕与上一名差距:{round(difference,2)}cm\n⭕备注: "
                 break
             else:
@@ -342,7 +343,10 @@ async def _(event: GroupMessageEvent):
         content[group][qq] = my_long
         ReadOrWrite("data/long.json", content)
     except KeyError:
-        del group_hit_glue[group][qq]["time"]
+        try: 
+          del group_hit_glue[group][qq]["time"]
+        except:
+          pass
         result = random.choice([
             "你还没有牛牛呢！不能打胶！",
             "无牛牛，打胶不要的"
