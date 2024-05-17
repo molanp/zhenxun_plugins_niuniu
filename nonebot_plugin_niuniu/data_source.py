@@ -157,12 +157,12 @@ def fencing(my_length, oppo_length, at_qq, my_qq, group, content={}):
 
 def calculate_win_probability(height_a, height_b):
     # 选手 A 的初始胜率为 90%
-    p_a = 0.9
+    p_a = de(0.9)
     # 计算长度比例
     height_ratio = max(height_a, height_b) / min(height_a, height_b)
 
     # 根据长度比例计算胜率减少率
-    reduction_rate = 0.1 * (height_ratio - 1)
+    reduction_rate = de(0.1) * (height_ratio - 1)
 
     # 计算 A 的胜率减少量
     reduction = p_a * reduction_rate
@@ -171,7 +171,7 @@ def calculate_win_probability(height_a, height_b):
     adjusted_p_a = p_a - reduction
 
     # 返回调整后的胜率
-    return max(adjusted_p_a, 0.01)
+    return max(adjusted_p_a, de(0.01))
 
 
 def determine_result_by_skill(my_length, oppo_length):
@@ -210,11 +210,11 @@ def apply_skill(my, oppo, increase_length1):
     reduce = fence(oppo)
     if increase_length1:
         my += reduce
-        oppo -= 0.8*reduce
+        oppo -= de(0.8)*reduce
         result = f"你以绝对的长度让对方屈服了！你的长度增加{reduce}cm，当前长度{my}cm！"
     else:
         my -= reduce
-        oppo += 0.8*reduce
+        oppo += de(0.8)*reduce
         result = f"由于对方击剑技术过于高超，你的长度减少{reduce}cm，当前长度{my}cm！"
     return result, my, oppo
 
@@ -231,7 +231,6 @@ def update_data(group, my_qq, my_length, at_qq, oppo_length, content):
         oppo_length (decimal): 对手的当前长度。
         content (dict): 数据存储。
     """
-    # 这里需要根据实际需求进行数据更新
     content[group][my_qq] = my_length
     content[group][at_qq] = oppo_length
     ReadOrWrite("data/long.json", content)
