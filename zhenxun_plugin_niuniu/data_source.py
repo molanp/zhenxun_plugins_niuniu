@@ -13,6 +13,7 @@ from utils.image_utils import BuildMat
 from configs.path_config import IMAGE_PATH
 from typing import List, Union
 
+
 def pic2b64(pic: Image) -> str:
     """
     说明:
@@ -32,9 +33,11 @@ def random_long():
     """
     return de(str(f"{random.randint(1,9)}.{random.randint(00,99)}"))
 
-def hit_glue(l): 
-  l -= de(1)
-  return de(abs(de(random.random())*l/de(2))).quantize(de("0.00"))
+
+def hit_glue(l):
+    l -= de(1)
+    return de(abs(de(random.random())*l/de(2))).quantize(de("0.00"))
+
 
 def fence(rd):
     """
@@ -45,7 +48,7 @@ def fence(rd):
     """
     rd -= de(time.localtime().tm_sec % 10)
     if rd > 1000000:
-      return de(rd - de(random.uniform(0.13, 0.34))*rd)
+        return de(rd - de(random.uniform(0.13, 0.34))*rd)
     return de(abs(rd*de(random.random()))).quantize(de("0.00"))
 
 
@@ -99,6 +102,7 @@ def get_all_users(group):
     """
     return ReadOrWrite("data/long.json")[group]
 
+
 def fencing(my_length, oppo_length, at_qq, my_qq, group, content={}):
     """
     确定击剑比赛的结果。
@@ -114,56 +118,61 @@ def fencing(my_length, oppo_length, at_qq, my_qq, group, content={}):
     # 定义损失和吞噬比例
     loss_limit = de(0.25)
     devour_limit = de(0.27)
-    
+
     # 生成一个随机数
     probability = random.randint(1, 100)
-    
+
     # 根据不同情况执行不同的击剑逻辑
     if oppo_length <= -100 and my_length > 0 and 10 < probability <= 20:
         oppo_length *= de(0.85)
         my_length -= min(abs(loss_limit * my_length), abs(de(1.5)*my_length))
         result = f"对方身为魅魔诱惑了你，你同化成魅魔！当前长度{my_length}cm！"
-        
+
     elif oppo_length >= 100 and my_length > 0 and 10 < probability <= 20:
         oppo_length *= de(0.85)
         my_length -= min(abs(devour_limit * my_length), abs(de(1.5)*my_length))
         result = f"对方以牛头人的荣誉摧毁了你的牛牛！当前长度{my_length}cm！"
-        
+
     elif my_length <= -100 and oppo_length > 0 and 10 < probability <= 20:
         my_length *= de(0.85)
-        oppo_length -= min(abs(loss_limit * oppo_length), abs(de(1.5)*oppo_length))
+        oppo_length -= min(abs(loss_limit * oppo_length),
+                           abs(de(1.5)*oppo_length))
         result = f"你身为魅魔诱惑了对方，吞噬了对方部分长度！当前长度{my_length}cm！"
-        
+
     elif my_length >= 100 and oppo_length > 0 and 10 < probability <= 20:
         my_length *= de(0.85)
-        oppo_length -= min(abs(devour_limit * oppo_length), abs(de(1.5)*oppo_length))
+        oppo_length -= min(abs(devour_limit * oppo_length),
+                           abs(de(1.5)*oppo_length))
         result = f"你以牛头人的荣誉摧毁了对方的牛牛！当前长度{my_length}cm！"
-        
+
     else:
         # 通过击剑技巧来决定结果
-        result, my_length, oppo_length = determine_result_by_skill(my_length, oppo_length)
-    
+        result, my_length, oppo_length = determine_result_by_skill(
+            my_length, oppo_length)
+
     # 更新数据并返回结果
     update_data(group, my_qq, oppo_length, at_qq, my_length, content)
     return result
 
+
 def calculate_win_probability(height_a, height_b):
     # 选手 A 的初始胜率为 90%
-    p_a = 0.9
+    p_a = de(0.9)
     # 计算长度比例
     height_ratio = max(height_a, height_b) / min(height_a, height_b)
-    
+
     # 根据长度比例计算胜率减少率
-    reduction_rate = 0.1 * (height_ratio - 1)
-    
+    reduction_rate = de(0.1) * (height_ratio - 1)
+
     # 计算 A 的胜率减少量
     reduction = p_a * reduction_rate
-    
+
     # 调整 A 的胜率
     adjusted_p_a = p_a - reduction
-    
+
     # 返回调整后的胜率
     return max(adjusted_p_a, 0.01)
+
 
 def determine_result_by_skill(my_length, oppo_length):
     """
@@ -178,12 +187,13 @@ def determine_result_by_skill(my_length, oppo_length):
     """
     # 生成一个随机数
     probability = random.randint(0, 100)
-    
+
     # 根据不同情况决定结果
     if 0 < probability <= calculate_win_probability(my_length, oppo_length)*100:
         return apply_skill(my_length, oppo_length, True)
     else:
         return apply_skill(my_length, oppo_length, False)
+
 
 def apply_skill(my, oppo, increase_length1):
     """
@@ -200,13 +210,14 @@ def apply_skill(my, oppo, increase_length1):
     reduce = fence(oppo)
     if increase_length1:
         my += reduce
-        oppo -= 0.8*reduce
+        oppo -= de(0.8)*reduce
         result = f"你以绝对的长度让对方屈服了！你的长度增加{reduce}cm，当前长度{my}cm！"
     else:
         my -= reduce
-        oppo += 0.8*reduce
+        oppo += de(0.8)*reduce
         result = f"由于对方击剑技术过于高超，你的长度减少{reduce}cm，当前长度{my}cm！"
     return result, my, oppo
+
 
 def update_data(group, my_qq, my_length, at_qq, oppo_length, content):
     """
