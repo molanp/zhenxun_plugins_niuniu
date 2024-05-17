@@ -171,7 +171,7 @@ def calculate_win_probability(height_a, height_b):
     adjusted_p_a = p_a - reduction
 
     # 返回调整后的胜率
-    return max(adjusted_p_a, 0.01)
+    return max(adjusted_p_a, de(0.01))
 
 
 def determine_result_by_skill(my_length, oppo_length):
