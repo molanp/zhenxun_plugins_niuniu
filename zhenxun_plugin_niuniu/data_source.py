@@ -99,122 +99,132 @@ def get_all_users(group):
     """
     return ReadOrWrite("data/long.json")[group]
 
-
-def fencing(my, oppo, at, qq, group, content={}):
+def fencing(my_length, oppo_length, at_qq, my_qq, group, content={}):
     """
-    击剑判断
+    确定击剑比赛的结果。
 
     Args:
-        my (decimal): 精确计算decimal类型或float,int
-        oppo (decimal): 精确计算decimal类型或float,int
-        at (str): 被at的人qq号
-        qq (str): 自己的qq号
-        group (str): 当前群号
-        content (dic): 数据
+        my_length (decimal): 我的当前长度，decimal 类型以确保精度。
+        oppo_length (decimal): 对手的当前长度，decimal 类型以确保精度。
+        at_qq (str): 被 @ 的人的 QQ 号码。
+        my_qq (str): 我的 QQ 号码。
+        group (str): 当前群号码。
+        content (dict): 用于存储长度的数据。
     """
-    # 损失比例
-    RdLimit = de(0.25)
-    # 吞噬比例
-    GtLimit = de(0.27)
+    # 定义损失和吞噬比例
+    loss_limit = de(0.25)
+    devour_limit = de(0.27)
+    
+    # 生成一个随机数
     probability = random.randint(1, 100)
-    if oppo <= -100 and my > 0 and 10 < probability <= 20:
-        oppo = de(0.85)*oppo
-        my -= abs(RdLimit*my)
-        result = f"对方身为魅魔诱惑了你，你同化成魅魔！当前长度{my}cm!"
-    elif oppo >= 100 and my > 0 and 10 < probability <= 20:
-        oppo = de(0.85)*oppo
-        my -= abs(GtLimit*my)
-        result = f"对方以牛头人的荣誉摧毁了你的牛牛！当前长度{my}cm!"
-    elif my <= -100 and oppo > 0 and 10 < probability <= 20:
-        my = de(0.85)*my
-        oppo -= abs(RdLimit*oppo)
-        result = f"你身为魅魔诱惑了对方，吞噬了对方部分长度！当前长度{my}cm!"
-    elif my >= 100 and oppo > 0 and 10 < probability <= 20:
-        my = de(0.85)*my
-        oppo -= abs(GtLimit*oppo)
-        result = f"你以牛头人的荣誉摧毁了对方的牛牛！当前长度{my}cm!"
+    
+    # 根据不同情况执行不同的击剑逻辑
+    if oppo_length <= -100 and my_length > 0 and 10 < probability <= 20:
+        oppo_length *= de(0.85)
+        my_length -= min(abs(loss_limit * my_length), abs(de(1.5)*my_length))
+        result = f"对方身为魅魔诱惑了你，你同化成魅魔！当前长度{my_length}cm！"
+        
+    elif oppo_length >= 100 and my_length > 0 and 10 < probability <= 20:
+        oppo_length *= de(0.85)
+        my_length -= min(abs(devour_limit * my_length), abs(de(1.5)*my_length))
+        result = f"对方以牛头人的荣誉摧毁了你的牛牛！当前长度{my_length}cm！"
+        
+    elif my_length <= -100 and oppo_length > 0 and 10 < probability <= 20:
+        my_length *= de(0.85)
+        oppo_length -= min(abs(loss_limit * oppo_length), abs(de(1.5)*oppo_length))
+        result = f"你身为魅魔诱惑了对方，吞噬了对方部分长度！当前长度{my_length}cm！"
+        
+    elif my_length >= 100 and oppo_length > 0 and 10 < probability <= 20:
+        my_length *= de(0.85)
+        oppo_length -= min(abs(devour_limit * oppo_length), abs(de(1.5)*oppo_length))
+        result = f"你以牛头人的荣誉摧毁了对方的牛牛！当前长度{my_length}cm！"
+        
     else:
-        if oppo > my:
-            probability = random.randint(1, 100)
-            if 0 < probability <= 60:
-                reduce = fence(my)
-                my -= reduce
-                oppo += reduce*de(0.8)
-                if my < 0:
-                    result = random.choice([
-                        f"哦吼！？看来你的牛牛因为击剑而凹进去了呢！凹进去了{reduce}cm！",
-                        f"由于对方击剑技术过于高超，造成你的牛牛凹了进去呢！凹进去了深{reduce}cm哦！",
-                        f"好惨啊，本来就不长的牛牛现在凹进去了呢！凹进去了{reduce}cm呢！"
-                    ])
-                else:
-                    result = f"对方以绝对的长度让你屈服了呢！你的长度减少{reduce}cm，当前长度{my}cm！"
-
-            else:
-                reduce = fence(oppo)
-                oppo -= reduce
-                my += reduce*de(0.8)
-                if my < 0:
-                    result = random.choice([
-                        f"哦吼！？你的牛牛在长大欸！长大了{reduce}cm！",
-                        f"牛牛凹进去的深度变浅了欸！变浅了{reduce}cm！"
-                    ])
-                else:
-                    result = f"虽然你不够长，但是你逆袭了呢！你的长度增加{reduce}cm，当前长度{my}cm！"
-        elif my > oppo:
-            probability = random.randint(1, 100)
-            if 0 < probability <= 73:
-                reduce = fence(oppo)
-                oppo -= reduce
-                reduce = reduce*de(0.8)
-                my += reduce
-                if my < 0:
-                    result = random.choice([
-                        f"哦吼！？你的牛牛在长大欸！长大了{reduce}cm！",
-                        f"牛牛凹进去的深度变浅了欸！变浅了{reduce}cm！"
-                    ])
-                else:
-                    result = f"你以绝对的长度让对方屈服了呢！你的长度增加{reduce}cm，当前长度{my}cm！"
-            else:
-                reduce = fence(my)
-                oppo += reduce*de(0.8)
-                my -= reduce
-                if my < 0:
-                    result = random.choice([
-                        f"哦吼！？看来你的牛牛因为击剑而凹进去了呢！目前深度{reduce}cm！",
-                        f"由于对方击剑技术过于高超，造成你的牛牛凹了进去呢！当前深度{reduce}cm！",
-                        f"好惨啊，本来就不长的牛牛现在凹进去了呢！凹进去了{reduce}cm！"
-                    ])
-                else:
-                    result = f"虽然你比较长，但是对方逆袭了呢！你的长度减少{reduce}cm，当前长度{my}cm！"
-        else:
-            probability = random.randint(1, 100)
-            reduce = fence(oppo)
-            if 0 < probability <= 50:
-                oppo -= reduce
-                reduce = reduce*de(0.8)
-                my += reduce
-                if my < 0:
-                    result = random.choice([
-                        f"哦吼！？你的牛牛在长大欸！长大了{reduce}cm！",
-                        f"牛牛凹进去的深度变浅了欸！变浅了{reduce}cm！"
-                    ])
-                else:
-                    result = f"你以技艺的高超让对方屈服啦🎉！你的长度增加{reduce}cm，当前长度{my}cm！"
-            else:
-                oppo += reduce*de(0.8)
-                my -= reduce
-                if my < 0:
-                    result = random.choice([
-                        f"哦吼！？看来你的牛牛因为击剑而凹进去了呢🤣🤣🤣！目前深度{reduce}cm！",
-                        f"由于对方击剑技术过于高超，造成你的牛牛凹了进去呢😰！当前深度{reduce}cm！",
-                        f"好惨啊，本来就不长的牛牛现在凹进去了呢😂！凹进去了{reduce}cm！"
-                    ])
-                else:
-                    result = f"由于对方击剑技术过于高超，你的长度减少{reduce}cm，当前长度{my}cm！"
-    content[group][qq] = my
-    content[group][at] = oppo
-    ReadOrWrite("data/long.json", content)
+        # 通过击剑技巧来决定结果
+        result, my_length, oppo_length = determine_result_by_skill(my_length, oppo_length)
+    
+    # 更新数据并返回结果
+    update_data(group, my_qq, oppo_length, at_qq, my_length, content)
     return result
+
+def calculate_win_probability(height_a, height_b):
+    # 选手 A 的初始胜率为 90%
+    p_a = 0.9
+    # 计算长度比例
+    height_ratio = max(height_a, height_b) / min(height_a, height_b)
+    
+    # 根据长度比例计算胜率减少率
+    reduction_rate = 0.1 * (height_ratio - 1)
+    
+    # 计算 A 的胜率减少量
+    reduction = p_a * reduction_rate
+    
+    # 调整 A 的胜率
+    adjusted_p_a = p_a - reduction
+    
+    # 返回调整后的胜率
+    return max(adjusted_p_a, 0.01)
+
+def determine_result_by_skill(my_length, oppo_length):
+    """
+    根据击剑技巧决定结果。
+
+    Args:
+        my_length (decimal): 我的当前长度。
+        oppo_length (decimal): 对手的当前长度。
+
+    Returns:
+        str: 包含结果的字符串。
+    """
+    # 生成一个随机数
+    probability = random.randint(0, 100)
+    
+    # 根据不同情况决定结果
+    if 0 < probability <= calculate_win_probability(my_length, oppo_length)*100:
+        return apply_skill(my_length, oppo_length, True)
+    else:
+        return apply_skill(my_length, oppo_length, False)
+
+def apply_skill(my, oppo, increase_length1):
+    """
+    应用击剑技巧并生成结果字符串。
+
+    Args:
+        my (decimal): 长度1。
+        oppo (decimal): 长度2。
+        increase_length1 (bool): my是否增加长度。
+
+    Returns:
+        str: 包含结果的数组。
+    """
+    reduce = fence(oppo)
+    if increase_length1:
+        my += reduce
+        oppo -= 0.8*reduce
+        result = f"你以绝对的长度让对方屈服了！你的长度增加{reduce}cm，当前长度{my}cm！"
+    else:
+        my -= reduce
+        oppo += 0.8*reduce
+        result = f"由于对方击剑技术过于高超，你的长度减少{reduce}cm，当前长度{my}cm！"
+    return result, my, oppo
+
+def update_data(group, my_qq, my_length, at_qq, oppo_length, content):
+    """
+    更新数据。
+
+    Args:
+        group (str): 群号。
+        my_qq (str): 我的 QQ 号。
+        my_length (decimal): 我的当前长度。
+        at_qq (str): 被 @ 的 QQ 号。
+        oppo_length (decimal): 对手的当前长度。
+        content (dict): 数据存储。
+    """
+    # 这里需要根据实际需求进行数据更新
+    content[group][my_qq] = my_length
+    content[group][at_qq] = oppo_length
+    ReadOrWrite("data/long.json", content)
+    return True
 
 
 async def init_rank(

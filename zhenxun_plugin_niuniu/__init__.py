@@ -343,10 +343,8 @@ async def _(event: GroupMessageEvent):
         content[group][qq] = my_long
         ReadOrWrite("data/long.json", content)
     except KeyError:
-        try: 
-          del group_hit_glue[group][qq]["time"]
-        except:
-          pass
+        if group in group_hit_glue and qq in group_hit_glue[group] and "time" in group_hit_glue[group][qq]:
+            del group_hit_glue[group][qq]["time"]
         result = random.choice([
             "你还没有牛牛呢！不能打胶！",
             "无牛牛，打胶不要的"
