@@ -12,6 +12,8 @@ from models.group_member_info import GroupInfoUser
 from utils.image_utils import BuildMat
 from configs.path_config import IMAGE_PATH
 from typing import List, Union
+import numpy as np
+from concurrent.futures import ThreadPoolExecutor
 
 
 def pic2b64(pic: Image) -> str:
@@ -64,11 +66,17 @@ def round_numbers(data, num_digits=2):
         any: 处理后的数据
     """
     if isinstance(data, dict):
-        return {k: round_numbers(v, num_digits) for k, v in data.items()}
+        with ThreadPoolExecutor() as executor:
+            processed_values = list(executor.map(lambda v: round_numbers(v, num_digits), data.values()))
+        return {k: processed_values[i] for i, k in enumerate(data.keys())}
     elif isinstance(data, list):
-        return [round_numbers(item, num_digits) for item in data]
+        with ThreadPoolExecutor() as executor:
+            processed_items = list(executor.map(lambda item: round_numbers(item, num_digits), data))
+        return processed_items
     elif isinstance(data, (int, float)):
         return round(data, num_digits)
+    elif isinstance(data, np.ndarray):
+        return np.round(data, num_digits)
     else:
         return data
 
