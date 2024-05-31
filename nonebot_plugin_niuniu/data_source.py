@@ -10,6 +10,8 @@ from pathlib import Path
 from decimal import Decimal as de
 from .image_utils import BuildMat
 from typing import List, Union
+import numpy as np
+from concurrent.futures import ThreadPoolExecutor
 
 IMAGE_PATH = Path(__file__).resolve().parent / "image"
 
@@ -51,7 +53,6 @@ def fence(rd):
         return de(rd - de(random.uniform(0.13, 0.34))*rd)
     return de(abs(rd*de(random.random()))).quantize(de("0.00"))
 
-
 def round_numbers(data, num_digits=2):
     """
     递归地四舍五入所有数字
@@ -64,14 +65,19 @@ def round_numbers(data, num_digits=2):
         any: 处理后的数据
     """
     if isinstance(data, dict):
-        return {k: round_numbers(v, num_digits) for k, v in data.items()}
+        with ThreadPoolExecutor() as executor:
+            processed_values = list(executor.map(lambda v: round_numbers(v, num_digits), data.values()))
+        return {k: processed_values[i] for i, k in enumerate(data.keys())}
     elif isinstance(data, list):
-        return [round_numbers(item, num_digits) for item in data]
+        with ThreadPoolExecutor() as executor:
+            processed_items = list(executor.map(lambda item: round_numbers(item, num_digits), data))
+        return processed_items
     elif isinstance(data, (int, float)):
         return round(data, num_digits)
+    elif isinstance(data, np.ndarray):
+        return np.round(data, num_digits)
     else:
         return data
-
 
 def ReadOrWrite(file, w=None):
     """
