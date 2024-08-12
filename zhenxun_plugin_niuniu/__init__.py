@@ -1,7 +1,5 @@
 from nonebot import on_command
 from nonebot.params import CommandArg
-from utils.utils import is_number
-from utils.message_builder import image
 from nonebot.adapters.onebot.v11 import (
     GroupMessageEvent,
     Message)
@@ -237,7 +235,7 @@ async def _(event: GroupMessageEvent):
 @niuzi_ranking.handle()
 async def _(event: GroupMessageEvent, arg: Message = CommandArg()):
     num = arg.extract_plain_text().strip()
-    if is_number(num) and 51 > int(num) > 10:
+    if str(num).isdigit() and 51 > int(num) > 10:
         num = int(num)
     else:
         num = 10
@@ -260,7 +258,7 @@ async def _(event: GroupMessageEvent, arg: Message = CommandArg()):
 @niuzi_ranking_e.handle()
 async def _(event: GroupMessageEvent, arg: Message = CommandArg()):
     num = arg.extract_plain_text().strip()
-    if is_number(num) and 51 > int(num) > 10:
+    if str(num).isdigit() and 51 > int(num) > 10:
         num = int(num)
     else:
         num = 10
