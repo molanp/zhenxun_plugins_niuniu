@@ -1,7 +1,7 @@
 # zhenxun_plugin_niuniu
 真寻群内小游戏插件-牛牛大作战(误
 
-> [!Notice]
+> [!IMPORTANT]
 > 目前正在进行适配以及重构工作，新功能正在编写
 
 # 本插件无需数据库！(因为我不会bushi)
