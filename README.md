@@ -1,7 +1,9 @@
 # zhenxun_plugin_niuniu
 真寻群内小游戏插件-牛牛大作战(误
 
-# 目前暂不适配0.2版本zhenxun，如果需要使用，请使用nonebot分支内的文件或release内的nonebot版本
+> [!Notice]
+> 目前正在进行适配以及重构工作，新功能正在编写
+
 # 本插件无需数据库！(因为我不会bushi)
 
 # [nonebot版本](https://github.com/molanp/zhenxun_plugin_niuniu/tree/nonebot)
